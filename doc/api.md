@@ -80,6 +80,7 @@ Usage example:
 
 ```md
 # Header 1
+
 This is the content of `test.md`
 
 <script>
@@ -89,14 +90,14 @@ alert("Script should be removed")
 ## Header 2
 
 | abc | defghi |
-:-: | -----------:
-bar | baz
+| :-: | -----: |
+| bar |    baz |
 
-**Bold**, `Monospace`, *Italics*, ~~Strikethrough~~, [URL](https://github.com)
+**Bold**, `Monospace`, _Italics_, ~~Strikethrough~~, [URL](https://github.com)
 
 - A
- - A1
- - A2
+- A1
+- A2
 - B
 
 ![Panty](https://shz.al/~panty.jpg)
@@ -109,7 +110,6 @@ bar | baz
 $$
 \int_{-\infty}^{\infty} e^{-x^2} = \sqrt{\pi}
 $$
-
 ```
 
 ```shell
@@ -136,10 +136,10 @@ Upload your paste. It accept parameters in form-data:
 
 ```json
 {
-    "url": "https://shz.al/abcd",
-    "admin": "https://shz.al/abcd:w2eHqyZGc@CQzWLN=BiJiQxZ",
-    "expire": 100,
-    "isPrivate": false
+  "url": "https://shz.al/abcd",
+  "admin": "https://shz.al/abcd:w2eHqyZGc@CQzWLN=BiJiQxZ",
+  "expire": 100,
+  "isPrivate": false
 }
 ```
 

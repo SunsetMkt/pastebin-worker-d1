@@ -1,5 +1,11 @@
 import { parsePath, WorkerError } from "../common.js"
-import { DB_Put, DB_Get, DB_GetWithMetadata, DB_Delete, safeAccess } from "../db.js"
+import {
+  DB_Put,
+  DB_Get,
+  DB_GetWithMetadata,
+  DB_Delete,
+  safeAccess,
+} from "../db.js"
 
 export async function handleDelete(request, env, ctx) {
   const url = new URL(request.url)

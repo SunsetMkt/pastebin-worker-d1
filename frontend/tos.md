@@ -1,6 +1,6 @@
 # TERMS AND CONDITIONS
 
->  TL;DR: **No warranty at all, EXCEPT AS ENFORCED BY LAW**. 
+> TL;DR: **No warranty at all, EXCEPT AS ENFORCED BY LAW**.
 
 Last updated: 2021-08-08
 
@@ -70,7 +70,7 @@ We may use third-party Service Providers to monitor and analyze the use of our S
 
 ## 5. Intellectual Property
 
-Service and its original content (excluding Content provided by users), features and functionality are and will remain the exclusive property of {{TOS_MAINTAINER}} and its licensors. Service is protected by copyright, trademark, and other laws of  and foreign countries. Our trademarks may not be used in connection with any product or service without the prior written consent of {{TOS_MAINTAINER}}.
+Service and its original content (excluding Content provided by users), features and functionality are and will remain the exclusive property of {{TOS_MAINTAINER}} and its licensors. Service is protected by copyright, trademark, and other laws of and foreign countries. Our trademarks may not be used in connection with any product or service without the prior written consent of {{TOS_MAINTAINER}}.
 
 ## 6. Copyright Policy
 
@@ -165,4 +165,3 @@ BY USING SERVICE OR OTHER SERVICES PROVIDED BY US, YOU ACKNOWLEDGE THAT YOU HAVE
 ## 18. Contact Us
 
 Please send your feedback, comments, requests for technical support by email: **{{TOS_MAIL}}**.
-

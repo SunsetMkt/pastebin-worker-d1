@@ -1,4 +1,10 @@
-import { decode, encodeRFC5987ValueChars, isLegalUrl, parsePath, WorkerError } from "../common.js"
+import {
+  decode,
+  encodeRFC5987ValueChars,
+  isLegalUrl,
+  parsePath,
+  WorkerError,
+} from "../common.js"
 import { getStaticPage } from "../pages/staticPages.js"
 import { verifyAuth } from "../auth.js"
 import { getType } from "mime/lite.js"
@@ -18,7 +24,9 @@ function pasteCacheHeader(env) {
 
 function lastModifiedHeader(paste) {
   const lastModified = paste.metadata?.lastModified
-  return lastModified ? { "last-modified": new Date(lastModified).toGMTString() } : {}
+  return lastModified
+    ? { "last-modified": new Date(lastModified).toGMTString() }
+    : {}
 }
 
 export async function handleGet(request, env, ctx) {
@@ -30,7 +38,10 @@ export async function handleGet(request, env, ctx) {
   }
 
   // return the editor for admin URL
-  const staticPageContent = getStaticPage((passwd.length > 0) ? "/" : url.pathname, env)
+  const staticPageContent = getStaticPage(
+    passwd.length > 0 ? "/" : url.pathname,
+    env,
+  )
   if (staticPageContent) {
     // access to all static pages requires auth
     const authResponse = verifyAuth(request, env)
@@ -38,7 +49,10 @@ export async function handleGet(request, env, ctx) {
       return authResponse
     }
     return new Response(staticPageContent, {
-      headers: { "content-type": "text/html;charset=UTF-8", ...staticPageCacheHeader(env) },
+      headers: {
+        "content-type": "text/html;charset=UTF-8",
+        ...staticPageCacheHeader(env),
+      },
     })
   }
 
@@ -85,7 +99,11 @@ export async function handleGet(request, env, ctx) {
   if (role === "a") {
     const md = makeMarkdown(decode(item.value))
     return new Response(md, {
-      headers: { "content-type": `text/html;charset=UTF-8`, ...pasteCacheHeader(env), ...lastModifiedHeader(item) },
+      headers: {
+        "content-type": `text/html;charset=UTF-8`,
+        ...pasteCacheHeader(env),
+        ...lastModifiedHeader(item),
+      },
     })
   }
 
@@ -93,15 +111,24 @@ export async function handleGet(request, env, ctx) {
   const lang = url.searchParams.get("lang")
   if (lang) {
     return new Response(makeHighlight(decode(item.value), lang), {
-      headers: { "content-type": `text/html;charset=UTF-8`, ...pasteCacheHeader(env), ...lastModifiedHeader(item) },
+      headers: {
+        "content-type": `text/html;charset=UTF-8`,
+        ...pasteCacheHeader(env),
+        ...lastModifiedHeader(item),
+      },
     })
   } else {
-
     // handle default
-    const headers = { "content-type": `${mime};charset=UTF-8`, ...pasteCacheHeader(env), ...lastModifiedHeader(item) }
+    const headers = {
+      "content-type": `${mime};charset=UTF-8`,
+      ...pasteCacheHeader(env),
+      ...lastModifiedHeader(item),
+    }
     if (returnFilename) {
       const encodedFilename = encodeRFC5987ValueChars(returnFilename)
-      headers["content-disposition"] = `${disp}; filename*=UTF-8''${encodedFilename}`
+      headers[
+        "content-disposition"
+      ] = `${disp}; filename*=UTF-8''${encodedFilename}`
     } else {
       headers["content-disposition"] = `${disp}`
     }

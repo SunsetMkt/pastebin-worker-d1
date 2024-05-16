@@ -1,5 +1,12 @@
 import { expect, test } from "vitest"
-import { areBlobsEqual, BASE_URL, createFormData, randomBlob, staticPages, workerFetchWithAuth } from "./testUtils.js"
+import {
+  areBlobsEqual,
+  BASE_URL,
+  createFormData,
+  randomBlob,
+  staticPages,
+  workerFetchWithAuth,
+} from "./testUtils.js"
 import { encodeBasicAuth, decodeBasicAuth } from "../src/auth.js"
 
 test("basic auth encode and decode", async () => {
@@ -18,17 +25,23 @@ test("basic auth encode and decode", async () => {
 
 test("basic auth", async () => {
   const usersKv = {
-    "user1": "passwd1",
-    "user2": "passwd2",
+    user1: "passwd1",
+    user2: "passwd2",
   }
 
   // access index
   for (const page of staticPages) {
-    expect((await workerFetchWithAuth(usersKv, `${BASE_URL}/${page}`, {})).status).toStrictEqual(401)
+    expect(
+      (await workerFetchWithAuth(usersKv, `${BASE_URL}/${page}`, {})).status,
+    ).toStrictEqual(401)
   }
-  expect((await workerFetchWithAuth(usersKv, BASE_URL, {
-    headers: { "Authorization": encodeBasicAuth("user1", usersKv["user1"]) },
-  })).status).toStrictEqual(200)
+  expect(
+    (
+      await workerFetchWithAuth(usersKv, BASE_URL, {
+        headers: { Authorization: encodeBasicAuth("user1", usersKv["user1"]) },
+      })
+    ).status,
+  ).toStrictEqual(200)
 
   // upload with no auth
   const blob1 = randomBlob(1024)
@@ -42,7 +55,7 @@ test("basic auth", async () => {
   const uploadResp1 = await workerFetchWithAuth(usersKv, BASE_URL, {
     method: "POST",
     body: createFormData({ c: blob1 }),
-    headers: { "Authorization": encodeBasicAuth("user2", usersKv["user2"]) },
+    headers: { Authorization: encodeBasicAuth("user2", usersKv["user2"]) },
   })
   expect(uploadResp1.status).toStrictEqual(200)
 
@@ -50,7 +63,7 @@ test("basic auth", async () => {
   const uploadResp2 = await workerFetchWithAuth(usersKv, BASE_URL, {
     method: "POST",
     body: createFormData({ c: blob1 }),
-    headers: { "Authorization": encodeBasicAuth("user1", "wrong-password") },
+    headers: { Authorization: encodeBasicAuth("user1", "wrong-password") },
   })
   expect(uploadResp2.status).toStrictEqual(401)
 

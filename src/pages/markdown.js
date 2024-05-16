@@ -23,12 +23,16 @@ function getMetadata(options) {
       if (tree.children.length > 1) {
         // description is set as the content of the second node
         const secondChild = tree.children[1]
-        options.result.description = escapeHtml(toString(secondChild).slice(0, descriptionLimit))
+        options.result.description = escapeHtml(
+          toString(secondChild).slice(0, descriptionLimit),
+        )
       }
     } else {
       // no title is set
       // description is set as the content of the first node
-      options.result.description = escapeHtml(toString(firstChild).slice(0, descriptionLimit))
+      options.result.description = escapeHtml(
+        toString(firstChild).slice(0, descriptionLimit),
+      )
     }
   }
 }
@@ -60,7 +64,7 @@ export function makeMarkdown(content) {
   const convertedHtml = unified()
     .use(remarkParse)
     .use(remarkGfm)
-    .use(getMetadata, { result: metadata })  // result is written to `metadata` variable
+    .use(getMetadata, { result: metadata }) // result is written to `metadata` variable
     .use(remarkRehype)
     .use(rehypeStringify)
     .processSync(new vFileShim(content))
@@ -71,7 +75,11 @@ export function makeMarkdown(content) {
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
   <title>${metadata.title}</title>
-  ${metadata.description.length > 0 ? `<meta name='description' content='${metadata.description}'>` : ""}
+  ${
+    metadata.description.length > 0
+      ? `<meta name='description' content='${metadata.description}'>`
+      : ""
+  }
   <link href='https://fastly.jsdelivr.net/npm/prismjs@1.23.0/themes/prism.css' rel='stylesheet' />
   <link href='https://fastly.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.css' rel='stylesheet' />
   <link rel='stylesheet' href='https://pages.github.com/assets/css/style.css'>

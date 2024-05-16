@@ -1,17 +1,17 @@
-const contentDispositionPrefix = 'Content-Disposition: form-data'
+const contentDispositionPrefix = "Content-Disposition: form-data"
 
 // TODO: migrate to native interface
 
 export function parseFormdata(uint8Array, boundary) {
   // return an array of {fields: {...: ...}, content: Int8Array}
 
-  boundary = '--' + boundary
+  boundary = "--" + boundary
   function readLine(idx) {
     // return the index before the next '\r\n' occurs after idx
     for (let i = idx; i < uint8Array.length - 1; i++) {
-      if (uint8Array[i] === 0x0D) {
-        i ++
-        if (uint8Array[i] === 0x0A) {
+      if (uint8Array[i] === 0x0d) {
+        i++
+        if (uint8Array[i] === 0x0a) {
           return i - 1
         }
       }
@@ -46,7 +46,10 @@ export function parseFormdata(uint8Array, boundary) {
       for (let i = 0; i < boundary.length; i++) {
         if (line[i] !== boundary.charCodeAt(i)) return 0
       }
-      if (line[boundary.length] === 0x2D && line[boundary.length + 1] === 0x2D) {
+      if (
+        line[boundary.length] === 0x2d &&
+        line[boundary.length + 1] === 0x2d
+      ) {
         return 2
       }
     }
@@ -63,15 +66,16 @@ export function parseFormdata(uint8Array, boundary) {
   let lineStart = readLine(0) + 2
   if (isNaN(lineStart)) return parts
   let bodyStartIdx = 0
-  let currentPart = {fields: {}, content: null}
+  let currentPart = { fields: {}, content: null }
 
   while (true) {
-    const lineEnd = readLine(lineStart);
+    const lineEnd = readLine(lineStart)
     const line = uint8Array.subarray(lineStart, lineEnd)
 
     // start reading the body
     if (status === 0) {
-      if (line.length === 0) {  // encounter end of headers
+      if (line.length === 0) {
+        // encounter end of headers
         status = 1
         bodyStartIdx = lineEnd + 2
       } else if (isContentDisposition(line)) {
@@ -79,10 +83,11 @@ export function parseFormdata(uint8Array, boundary) {
       }
     } else {
       const lineType = getLineType(line)
-      if (lineType !== 0) {  // current line is boundary or EOF
+      if (lineType !== 0) {
+        // current line is boundary or EOF
         currentPart.content = uint8Array.subarray(bodyStartIdx, lineStart - 2)
         parts.set(currentPart.fields.name, currentPart)
-        currentPart = {fields: {}, content: null}
+        currentPart = { fields: {}, content: null }
         status = 0
       }
       if (lineType === 2 || lineEnd === uint8Array.length) break
@@ -94,5 +99,5 @@ export function parseFormdata(uint8Array, boundary) {
 }
 
 export function getBoundary(contentType) {
-  return contentType.split('=')[1]
+  return contentType.split("=")[1]
 }

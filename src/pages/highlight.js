@@ -12,7 +12,9 @@ export function makeHighlight(content, lang) {
   <link href='https://fastly.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.css' rel='stylesheet' />
 </head>
 <body class='line-numbers'>
-<pre><code class='language-${escapeHtml(lang)}'>${escapeHtml(content)}</code></pre>
+<pre><code class='language-${escapeHtml(lang)}'>${escapeHtml(
+    content,
+  )}</code></pre>
   <script src='https://fastly.jsdelivr.net/npm/prismjs@1.23.0/components/prism-core.min.js'></script>
   <script src='https://fastly.jsdelivr.net/npm/prismjs@1.23.0/plugins/line-numbers/prism-line-numbers.min.js'></script>
   <script src='https://fastly.jsdelivr.net/npm/prismjs@1.23.0/plugins/autoloader/prism-autoloader.min.js'></script>

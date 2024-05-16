@@ -12,7 +12,16 @@ import {
 } from "../common.js"
 import { DB_Put, DB_Get, DB_GetWithMetadata, safeAccess } from "../db.js"
 
-async function createPaste(env, content, isPrivate, expire, short, createDate, passwd, filename) {
+async function createPaste(
+  env,
+  content,
+  isPrivate,
+  expire,
+  short,
+  createDate,
+  passwd,
+  filename,
+) {
   const now = new Date().toISOString()
   createDate = createDate || now
   passwd = passwd || genRandStr(params.ADMIN_PATH_LEN)
@@ -26,15 +35,20 @@ async function createPaste(env, content, isPrivate, expire, short, createDate, p
     }
   }
 
-  await DB_Put(short, content, {
-    expirationTtl: expire,
-    // metadata: {
+  await DB_Put(
+    short,
+    content,
+    {
+      expirationTtl: expire,
+      // metadata: {
       postedAt: createDate,
       passwd: passwd,
       filename: filename,
       lastModified: now,
-    // },
-  }, env)
+      // },
+    },
+    env,
+  )
   let accessUrl = env.BASE_URL + "/" + short
   const adminUrl = env.BASE_URL + "/" + short + params.SEP + passwd
   return {
@@ -57,7 +71,8 @@ function suggestUrl(content, filename, short, baseUrl) {
 }
 
 export async function handlePostOrPut(request, env, ctx, isPut) {
-  if (!isPut) {  // only POST requires auth, since PUT request already contains auth
+  if (!isPut) {
+    // only POST requires auth, since PUT request already contains auth
     const authResponse = verifyAuth(request, env)
     if (authResponse !== null) {
       return authResponse
@@ -79,7 +94,10 @@ export async function handlePostOrPut(request, env, ctx, isPut) {
       throw new WorkerError(400, "error occurs when parsing formdata")
     }
   } else {
-    throw new WorkerError(400, `bad usage, please use 'multipart/form-data' instead of ${contentType}`)
+    throw new WorkerError(
+      400,
+      `bad usage, please use 'multipart/form-data' instead of ${contentType}`,
+    )
   }
   const content = form.get("c") && form.get("c").content
   const filename = form.get("c") && getDispFilename(form.get("c").fields)
@@ -103,7 +121,10 @@ export async function handlePostOrPut(request, env, ctx, isPut) {
   if (expire !== undefined) {
     expirationSeconds = parseExpiration(expire)
     if (isNaN(expirationSeconds)) {
-      throw new WorkerError(400, `cannot parse expire ${expirationSeconds} as an number`)
+      throw new WorkerError(
+        400,
+        `cannot parse expire ${expirationSeconds} as an number`,
+      )
     }
     /** KV Only limitation
     if (expirationSeconds < 60) {
@@ -140,7 +161,16 @@ export async function handlePostOrPut(request, env, ctx, isPut) {
         throw new WorkerError(403, `incorrect password for paste '${short}`)
       } else {
         return makeResponse(
-          await createPaste(env, content, isPrivate, expirationSeconds, short, date, newPasswd || passwd, filename),
+          await createPaste(
+            env,
+            content,
+            isPrivate,
+            expirationSeconds,
+            short,
+            date,
+            newPasswd || passwd,
+            filename,
+          ),
         )
       }
     }
@@ -151,8 +181,17 @@ export async function handlePostOrPut(request, env, ctx, isPut) {
       if ((await DB_Get(short, env)) !== null)
         throw new WorkerError(409, `name '${name}' is already used`)
     }
-    return makeResponse(await createPaste(
-      env, content, isPrivate, expirationSeconds, short, undefined, newPasswd, filename,
-    ))
+    return makeResponse(
+      await createPaste(
+        env,
+        content,
+        isPrivate,
+        expirationSeconds,
+        short,
+        undefined,
+        newPasswd,
+        filename,
+      ),
+    )
   }
 }

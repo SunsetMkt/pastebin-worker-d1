@@ -1,25 +1,25 @@
 # Pastebin-worker
 
-This is a pastebin that can be deployed on Cloudflare workers. Try it on [shz.al](https://shz.al). 
+This is a pastebin that can be deployed on Cloudflare workers. Try it on [shz.al](https://shz.al).
 
-**Philosophy**: effortless deployment, friendly CLI usage, rich functionality. 
+**Philosophy**: effortless deployment, friendly CLI usage, rich functionality.
 
 **Features**:
 
 1. Share your paste with as short as 4 characters
 2. Customize the paste URL
-4. **Update** and **delete** your paste as you want
-5. **Expire** your paste after a period of time
-6. **Syntax highlighting** powered by PrismJS
-7. Display **markdown** file as HTML
-8. Used as a URL shortener
-9. Customize returned mimetype
+3. **Update** and **delete** your paste as you want
+4. **Expire** your paste after a period of time
+5. **Syntax highlighting** powered by PrismJS
+6. Display **markdown** file as HTML
+7. Used as a URL shortener
+8. Customize returned mimetype
 
 ## Usage
 
-1. You can post, update, delete your paste directly on the website (such as [shz.al](https://shz.al)). 
+1. You can post, update, delete your paste directly on the website (such as [shz.al](https://shz.al)).
 
-2. It also provides a convenient HTTP API to use. See [API reference](doc/api.md) for details. You can easily call API via command line (using `curl` or similar tools). 
+2. It also provides a convenient HTTP API to use. See [API reference](doc/api.md) for details. You can easily call API via command line (using `curl` or similar tools).
 
 3. [pb](/scripts) is a bash script to make it easier to use on command line.
 
@@ -30,7 +30,7 @@ This is a pastebin that can be deployed on Cloudflare workers. Try it on [shz.al
 
 ## Deploy
 
-You are free to deploy the pastebin on your own domain if you host your domain on Cloudflare. 
+You are free to deploy the pastebin on your own domain if you host your domain on Cloudflare.
 
 1. Install `node` and `yarn`.
 
@@ -79,12 +79,15 @@ $ curl -u admin1:this-is-passwd-1 -Fc=@/path/to/file example-pb.com
 ```
 
 ## Administration
+
 Delete a paste:
+
 ```console
 $ yarn delete-paste <name-of-paste>
 ```
 
 List pastes:
+
 ```console
 $ yarn wrangler kv:key list --binding PB > kv_list.json
 ```
@@ -92,16 +95,19 @@ $ yarn wrangler kv:key list --binding PB > kv_list.json
 ## Development
 
 Run a local simulator:
+
 ```console
 $ yarn dev
 ```
 
 Run tests:
+
 ```console
 $ yarn test
 ```
 
 Run tests with coverage report:
+
 ```console
 $ yarn coverage
 ```

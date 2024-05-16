@@ -1,5 +1,5 @@
 import { WorkerError } from "./common.js"
-import { Buffer } from 'node:buffer'
+import { Buffer } from "node:buffer"
 
 // Encoding function
 export function encodeBasicAuth(username, password) {
@@ -14,7 +14,9 @@ export function decodeBasicAuth(encodedString) {
   if (scheme !== "Basic") {
     throw new WorkerError(400, "Invalid authentication scheme")
   }
-  const credentials = Buffer.from(encodedCredentials, "base64").toString("utf-8")
+  const credentials = Buffer.from(encodedCredentials, "base64").toString(
+    "utf-8",
+  )
   const [username, password] = credentials.split(":")
   return { username, password }
 }
@@ -32,7 +34,9 @@ export function verifyAuth(request, env) {
   if (passwdMap.size === 0) return null
 
   if (request.headers.has("Authorization")) {
-    const { username, password } = decodeBasicAuth(request.headers.get("Authorization"))
+    const { username, password } = decodeBasicAuth(
+      request.headers.get("Authorization"),
+    )
     if (passwdMap.get(username) === undefined) {
       throw new WorkerError(401, "user not found for basic auth")
     } else if (passwdMap.get(username) !== password) {
@@ -45,7 +49,7 @@ export function verifyAuth(request, env) {
       status: 401,
       headers: {
         // Prompts the user for credentials.
-        "WWW-Authenticate": "Basic charset=\"UTF-8\"",
+        "WWW-Authenticate": 'Basic charset="UTF-8"',
       },
     })
   }

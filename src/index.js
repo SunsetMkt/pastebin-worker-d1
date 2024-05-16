@@ -1,4 +1,4 @@
-import { WorkerError, } from "./common.js"
+import { WorkerError } from "./common.js"
 
 import { handleOptions, corsWrapResponse } from "./handlers/handleCors.js"
 import { handlePostOrPut } from "./handlers/handleWrite.js"
@@ -17,17 +17,24 @@ async function handleRequest(request, env, ctx) {
       return handleOptions(request)
     } else {
       const response = await handleNormalRequest(request, env, ctx)
-      if (response.status !== 302 && response.headers !== undefined) {  // because Cloudflare do not allow modifying redirect headers
+      if (response.status !== 302 && response.headers !== undefined) {
+        // because Cloudflare do not allow modifying redirect headers
         response.headers.set("Access-Control-Allow-Origin", "*")
       }
       return response
     }
   } catch (e) {
     if (e instanceof WorkerError) {
-      return corsWrapResponse(new Response(`Error ${e.statusCode}: ${e.message}\n`, { status: e.statusCode }))
+      return corsWrapResponse(
+        new Response(`Error ${e.statusCode}: ${e.message}\n`, {
+          status: e.statusCode,
+        }),
+      )
     } else {
       console.log(e.stack)
-      return corsWrapResponse(new Response(`Error 500: ${e.message}\n`, { status: 500 }))
+      return corsWrapResponse(
+        new Response(`Error 500: ${e.message}\n`, { status: 500 }),
+      )
     }
   }
 }
@@ -45,4 +52,3 @@ async function handleNormalRequest(request, env, ctx) {
     throw new WorkerError(405, "method not allowed")
   }
 }
-

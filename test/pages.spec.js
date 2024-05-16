@@ -8,8 +8,8 @@ test("static pages", async () => {
 })
 
 test("markdown", async () => {
-  const testMd = `# Hello`  // TODO: use a stronger test file
-  const url = (await upload({ "c": testMd }))["url"]
+  const testMd = `# Hello` // TODO: use a stronger test file
+  const url = (await upload({ c: testMd }))["url"]
 
   function makeMarkdownUrl(url) {
     const splitPoint = url.lastIndexOf("/")
@@ -18,7 +18,9 @@ test("markdown", async () => {
 
   const revisitResponse = await workerFetch(makeMarkdownUrl(url))
   expect(revisitResponse.status).toStrictEqual(200)
-  expect(revisitResponse.headers.get("Content-Type")).toStrictEqual("text/html;charset=UTF-8")
+  expect(revisitResponse.headers.get("Content-Type")).toStrictEqual(
+    "text/html;charset=UTF-8",
+  )
   const responseHtml = await revisitResponse.text()
   expect(responseHtml.indexOf("<title>Hello</title>")).toBeGreaterThan(-1)
   expect(responseHtml.indexOf("<h1>Hello</h1>")).toBeGreaterThan(-1)
@@ -26,7 +28,7 @@ test("markdown", async () => {
 
 test("url redirect", async () => {
   const contentUrl = "https://example.com:1234/abc-def?g=hi&jk=l"
-  const uploadResp = await upload({ "c": contentUrl })
+  const uploadResp = await upload({ c: contentUrl })
   const url = uploadResp["url"]
 
   function makeRedirectUrl(url) {
@@ -43,7 +45,7 @@ test("url redirect", async () => {
 
 test("url redirect with illegal url", async () => {
   const contentUrl = "xxxx"
-  const uploadResp = await upload({ "c": contentUrl })
+  const uploadResp = await upload({ c: contentUrl })
   const url = uploadResp["url"]
 
   function makeRedirectUrl(url) {
@@ -58,12 +60,11 @@ test("url redirect with illegal url", async () => {
 })
 
 test("highlight", async () => {
-  const content = "print(\"hello world\")"
-  const url = (await upload(({ "c": content })))["url"]
+  const content = 'print("hello world")'
+  const url = (await upload({ c: content }))["url"]
   const resp = await workerFetch(`${url}?lang=html`)
   expect(resp.status).toStrictEqual(200)
   const body = await resp.text()
   expect(body.includes("language-html")).toBeTruthy()
   expect(body.includes(content)).toBeTruthy()
 })
-
