@@ -15,7 +15,7 @@ rules = [
 
 [[routes]]
 # Refer to https://developers.cloudflare.com/workers/wrangler/configuration/#routes
-pattern = "pastes.lwd-temp.top"
+pattern = "paste.sunmkt.top"
 custom_domain = true
 
 [[kv_namespaces]]
@@ -30,10 +30,10 @@ database_id = "77e9dafa-8f6b-4636-94f0-1a8e6e0e5fc1" # id of your D1 database
 
 [vars]
 # must be consistent with your routes
-BASE_URL = "https://pastes.lwd-temp.top"
+BASE_URL = "https://paste.sunmkt.top"
 
 # url to repo, displayed in index page
-REPO = "https://github.com/lwd-temp/pastebin-worker-"
+REPO = "https://github.com/SunsetMkt/pastebin-worker-d1"
 
 # url to favicon
 FAVICON = "https://sharzy.in/favicon-32x32.png"
@@ -42,7 +42,7 @@ FAVICON = "https://sharzy.in/favicon-32x32.png"
 TOS_MAINTAINER = "Sunset"
 
 # the email displayed in TOS
-TOS_MAIL = "i@lwd-temp.top"
+TOS_MAIL = "hi@sunmkt.top"
 
 # Cache-Control max-age for static pages
 CACHE_STATIC_PAGE_AGE = 7200
